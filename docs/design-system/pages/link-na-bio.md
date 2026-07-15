@@ -14,20 +14,22 @@ não fazem parte do sistema genérico de marca.
 - **Container:** `mx-auto max-w-[420px] px-4` — mobile-first, centralizado.
 - **Fluxo vertical único**, sem grid de colunas. Ordem fixa:
   1. Header (logo + nome + subtítulo)
-  2. Galeria rotativa (strip)
+  2. Carrossel de fotos (topo) — 6 fotos
   3. CTAs empilhados (3)
-  4. Ícones sociais
-  5. Rodapé
-- A página deve caber em **1–2 scrolls** no celular. Sem scroll horizontal.
+  4. Carrossel de fotos (abaixo dos botões) — 6 fotos diferentes
+  5. Ícones sociais
+  6. Rodapé
+- Sem scroll horizontal **na página** (o scroll horizontal é apenas dentro dos
+  carrosséis).
 
 ---
 
 ## Componentes exclusivos desta página
 
-- **Galeria rotativa (strip):** carrossel horizontal automático em loop
-  contínuo (CSS `translate3d`, keyframe `gallery-scroll`), sem controles, sem
-  clique, `aria-hidden`. Altura ~180px, cards `aspect-ratio` 4/3. Não existe em
-  nenhum outro contexto da marca.
+- **Carrossel (`Carrossel`):** strip horizontal **arrastável nos dois sentidos**
+  (touch nativo + drag no mouse), autoplay suave com pausa na interação, loop
+  infinito (2 cópias). **Não abre/expande** a foto. Altura ~180px, cards 4/3.
+  **Usado 2×** (topo e abaixo dos CTAs), com fotos diferentes.
 - **Stack de 3 CTAs** com hierarquia decrescente (primário WhatsApp → secundário
   portfólio → terciário site outline). Gap de 12px. Todos full-width,
   `min-h-[48px]`, `rounded-md`.
@@ -36,9 +38,9 @@ não fazem parte do sistema genérico de marca.
 
 ## Motion
 
-- Galeria em loop `linear` infinito.
+- Carrossel: autoplay em JS (rAF) que pausa em hover/drag/touch.
 - Botões: apenas `transition-colors` + `active state` (feedback tátil mobile).
-- Respeitar `prefers-reduced-motion`: galeria estática quando ativo.
+- Respeitar `prefers-reduced-motion`: sem autoplay (o arrasto manual continua).
 
 ---
 

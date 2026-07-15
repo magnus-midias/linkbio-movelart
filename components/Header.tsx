@@ -18,7 +18,7 @@ export function Header() {
           Movelart
         </h1>
         <p className="font-sans text-sm text-brand-muted">
-          Móveis Sob Medida · Grande Florianópolis, SC
+          Móveis Sob Medida | Grande Florianópolis, SC
         </p>
       </div>
     </header>

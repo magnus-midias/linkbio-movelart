@@ -1,17 +1,20 @@
 import { Header } from "@/components/Header";
-import { GaleriaStrip } from "@/components/GaleriaStrip";
+import { Carrossel } from "@/components/Carrossel";
 import { BotaoCta } from "@/components/BotaoCta";
 import { RedesSociais } from "@/components/RedesSociais";
 import { Rodape } from "@/components/Rodape";
 import { IconWhatsApp } from "@/components/icons";
 
-// Composição do link na bio. Ordem das 5 seções: docs/arquitetura §3.
+// Composição do link na bio. Ordem das seções: docs/arquitetura §3.
 export default function Home() {
   return (
     <main className="flex flex-1 flex-col gap-8 py-8">
       <Header />
 
-      <GaleriaStrip />
+      <Carrossel
+        fotos={[1, 2, 3, 4, 5, 6]}
+        ariaLabel="Fotos de projetos da Movelart"
+      />
 
       <nav aria-label="Ações principais" className="flex flex-col gap-3">
         <BotaoCta
@@ -34,6 +37,11 @@ export default function Home() {
           dataLabel="site"
         />
       </nav>
+
+      <Carrossel
+        fotos={[7, 8, 9, 10, 11, 12]}
+        ariaLabel="Mais fotos de projetos da Movelart"
+      />
 
       <RedesSociais />
 

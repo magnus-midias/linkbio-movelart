@@ -13,11 +13,3 @@
     text-wrap: balance;
   }
 }
-
-/* Galeria (strip): pausa a animação quando o usuário prefere menos movimento.
-   Ver docs/design-system/MASTER.md §6 e pages/link-na-bio.md. */
-@media (prefers-reduced-motion: reduce) {
-  .animate-gallery-scroll {
-    animation: none;
-  }
-}

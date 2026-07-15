@@ -23,11 +23,11 @@ const yantramanav = Yantramanav({
 });
 
 export const metadata: Metadata = {
-  title: "Movelart · Móveis Sob Medida",
+  title: "Movelart | Móveis Sob Medida",
   description:
     "Marcenaria de alto padrão na Grande Florianópolis. Projetos exclusivos sob medida. Solicite seu orçamento pelo WhatsApp.",
   openGraph: {
-    title: "Movelart · Móveis Sob Medida",
+    title: "Movelart | Móveis Sob Medida",
     description:
       "Marcenaria de alto padrão na Grande Florianópolis. Projetos exclusivos sob medida.",
     type: "profile",

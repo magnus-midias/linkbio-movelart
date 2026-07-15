@@ -29,15 +29,6 @@ const config: Config = {
         sm: "4px",
         md: "8px",
       },
-      keyframes: {
-        "gallery-scroll": {
-          from: { transform: "translate3d(0, 0, 0)" },
-          to: { transform: "translate3d(-50%, 0, 0)" },
-        },
-      },
-      animation: {
-        "gallery-scroll": "gallery-scroll 30s linear infinite",
-      },
     },
   },
   plugins: [],

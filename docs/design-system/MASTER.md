@@ -157,12 +157,20 @@ transition-colors
   "Móveis Sob Medida · Grande Florianópolis, SC".
 - Centralizado. Sem sticky, sem menu, sem drawer.
 
-### 5.6 Galeria rotativa (strip)
-- Carrossel horizontal automático, sem pausa, sem controles, sem clique.
-- Loop contínuo via CSS `animation` com `translate3d` (ver §6).
-- Altura ~180px; cards `aspect-ratio` 4/3; placeholder `bg-brand-surface`.
-- Puramente decorativa — `aria-hidden="true"`.
-- Fase posterior: substituir placeholders por `<Image>` reais.
+### 5.6 Carrossel de fotos (strip arrastável) — componente `Carrossel`
+- **Arrastável nos dois sentidos:** touch nativo (mobile) + drag com o mouse
+  (desktop, via Pointer Events). **Não abre/expande** a foto no clique.
+- Autoplay suave (rAF, ~0,5px/frame) que **pausa na interação** (hover/drag/
+  touch) e respeita `prefers-reduced-motion`. Loop infinito nos dois lados via
+  2 cópias idênticas da lista.
+- Altura ~180px; cards `aspect-ratio` 4/3; placeholder `bg-brand-surface`,
+  `rounded-sm`, `select-none`.
+- Região rolável com `aria-label` e `tabIndex={0}` (teclado); a 2ª cópia é
+  `aria-hidden`. Scrollbar oculta.
+- **Usado em duas instâncias** na página: topo e abaixo dos CTAs (fotos
+  diferentes). Ver `pages/link-na-bio.md`.
+- Fase posterior: substituir placeholders por `<Image>` reais
+  (`draggable={false}`).
 
 ### 5.7 Ícones sociais
 - Instagram e WhatsApp, SVG inline, 28px.
@@ -183,15 +191,16 @@ transition-colors
 
 ## 6. Animações
 
-| Nome | Keyframe | Duração | Easing | Uso |
-|---|---|---|---|---|
-| `gallery-scroll` | `translate3d(0)` → `translate3d(-50%, 0, 0)` | ~30s (ajustar) | `linear` | Loop contínuo da galeria strip |
+| Nome | Técnica | Velocidade | Uso |
+|---|---|---|---|
+| Autoplay do carrossel | JS (`requestAnimationFrame`, `scrollLeft += 0.5`) | ~30px/s | Rolagem contínua das strips, com pausa na interação |
 
+- **Autoplay do carrossel:** implementado em JS (não em CSS) porque o carrossel
+  também é arrastável. Pausa em hover/drag/touch. Respeita
+  `prefers-reduced-motion` (sem autoplay; o arrasto manual continua funcionando).
 - **Padrão de hover/active em botões:** `transition-colors duration-200`. Sem
   bounce, sem translate vertical. Active state obrigatório (feedback tátil no
   mobile): escurece para `brand-accent-hover`.
-- **`prefers-reduced-motion`:** desabilitar a animação da galeria
-  (`@media (prefers-reduced-motion: reduce)`), deixando a strip estática.
 
 ---
 
