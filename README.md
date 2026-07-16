@@ -111,15 +111,16 @@ npm start
 ### Layout da página (topo → base)
 
 1. **Header** — logo, nome e subtítulo
-2. **Carrossel** — fotos de projetos (arrastável nos dois sentidos)
-3. **CTAs** — WhatsApp (primário) · Portfólio · Site
-4. **Carrossel** — mais fotos de projetos
+2. **Galeria** — duas faixas de fotos girando em sentidos opostos
+3. **Solicitar orçamento** — CTA primário (WhatsApp)
+4. **Ver portfólio** e **Acessar o site** (CTAs secundário/terciário)
 5. **Redes sociais** — Instagram e WhatsApp
 6. **Rodapé**
 
-O **Carrossel** permite arrastar (touch nativo e drag no mouse), tem autoplay
-suave que pausa na interação, respeita `prefers-reduced-motion` e **não**
-abre/expande a foto.
+A **Galeria** usa o componente `Carrossel` em duas instâncias (sentidos
+opostos): roda automaticamente o tempo todo, pode ser arrastada (touch nativo e
+drag no mouse) pausando só durante o arrasto, respeita `prefers-reduced-motion`
+e **não** abre/expande a foto.
 
 ---
 

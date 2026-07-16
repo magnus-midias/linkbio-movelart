@@ -158,19 +158,28 @@ transition-colors
 - Centralizado. Sem sticky, sem menu, sem drawer.
 
 ### 5.6 Carrossel de fotos (strip arrastável) — componente `Carrossel`
+- **Roda automaticamente o tempo todo** (rAF, ~0,5px/frame). **Não pausa no
+  hover** — a ideia é seguir girando enquanto a pessoa navega. Só pausa
+  **enquanto o usuário arrasta**; ao soltar, volta a rodar naturalmente.
 - **Arrastável nos dois sentidos:** touch nativo (mobile) + drag com o mouse
   (desktop, via Pointer Events). **Não abre/expande** a foto no clique.
-- Autoplay suave (rAF, ~0,5px/frame) que **pausa na interação** (hover/drag/
-  touch) e respeita `prefers-reduced-motion`. Loop infinito nos dois lados via
-  2 cópias idênticas da lista.
-- Altura ~180px; cards `aspect-ratio` 4/3; placeholder `bg-brand-surface`,
-  `rounded-sm`, `select-none`.
+- Respeita `prefers-reduced-motion` (sem autoplay; o arrasto segue). Loop
+  infinito nos dois lados via 2 cópias idênticas.
+- A posição do giro é controlada por uma variável própria (`pos`, float) que só
+  escreve em `scrollLeft` durante o autoplay e lê de volta durante o arrasto —
+  evita o travamento por arredondamento do navegador no sentido "right".
+- Props:
+  - `direction`: `"left" | "right"` — sentido do giro.
+  - `size`: `"sm" | "md"` — altura do card (`h-[90px]` / `h-[180px]`),
+    `aspect-ratio` 4/3.
+- Cards: `bg-brand-surface`, `rounded-sm`, `select-none`.
 - Região rolável com `aria-label` e `tabIndex={0}` (teclado); a 2ª cópia é
   `aria-hidden`. Scrollbar oculta.
-- **Usado em duas instâncias** na página: topo e abaixo dos CTAs (fotos
-  diferentes). Ver `pages/link-na-bio.md`.
-- Fase posterior: substituir placeholders por `<Image>` reais
-  (`draggable={false}`).
+- **Uso atual:** duas instâncias empilhadas formando uma galeria — faixa de cima
+  `direction="left"`, faixa de baixo `direction="right"`, ambas `size="sm"`.
+  Ver `pages/link-na-bio.md`.
+- Fase posterior: substituir placeholders por `<Image>` (WebP, tamanho fixo,
+  `draggable={false}`).
 
 ### 5.7 Ícones sociais
 - Instagram e WhatsApp, SVG inline, 28px.
@@ -196,8 +205,9 @@ transition-colors
 | Autoplay do carrossel | JS (`requestAnimationFrame`, `scrollLeft += 0.5`) | ~30px/s | Rolagem contínua das strips, com pausa na interação |
 
 - **Autoplay do carrossel:** implementado em JS (não em CSS) porque o carrossel
-  também é arrastável. Pausa em hover/drag/touch. Respeita
-  `prefers-reduced-motion` (sem autoplay; o arrasto manual continua funcionando).
+  também é arrastável. Roda o tempo todo; pausa **apenas durante o arrasto**
+  (não no hover) e retoma ao soltar. Respeita `prefers-reduced-motion` (sem
+  autoplay; o arrasto manual continua funcionando).
 - **Padrão de hover/active em botões:** `transition-colors duration-200`. Sem
   bounce, sem translate vertical. Active state obrigatório (feedback tátil no
   mobile): escurece para `brand-accent-hover`.

@@ -14,22 +14,24 @@ não fazem parte do sistema genérico de marca.
 - **Container:** `mx-auto max-w-[420px] px-4` — mobile-first, centralizado.
 - **Fluxo vertical único**, sem grid de colunas. Ordem fixa:
   1. Header (logo + nome + subtítulo)
-  2. Carrossel de fotos (topo) — 6 fotos
-  3. CTAs empilhados (3)
-  4. Carrossel de fotos (abaixo dos botões) — 6 fotos diferentes
-  5. Ícones sociais
-  6. Rodapé
-- Sem scroll horizontal **na página** (o scroll horizontal é apenas dentro dos
-  carrosséis).
+  2. Galeria — duas faixas de fotos (`size="sm"`), a de cima girando p/ esquerda
+     e a de baixo p/ direita
+  3. Botão "Solicitar orçamento" (primário, WhatsApp)
+  4. Botão "Ver portfólio" (secundário)
+  5. Botão "Acessar o site" (terciário)
+  6. Ícones sociais
+  7. Rodapé
+- Sem scroll horizontal **na página** (o scroll horizontal é apenas dentro das
+  faixas).
 
 ---
 
 ## Componentes exclusivos desta página
 
-- **Carrossel (`Carrossel`):** strip horizontal **arrastável nos dois sentidos**
-  (touch nativo + drag no mouse), autoplay suave com pausa na interação, loop
-  infinito (2 cópias). **Não abre/expande** a foto. Altura ~180px, cards 4/3.
-  **Usado 2×** (topo e abaixo dos CTAs), com fotos diferentes.
+- **Galeria (2× `Carrossel`):** duas faixas em sentidos opostos (`direction`
+  `left`/`right`), `size="sm"` (~metade). Rodam o tempo todo; arrastáveis (touch
+  + mouse); pausam só no arrasto e voltam ao soltar; **não** pausam no hover;
+  **não** abrem/expandem a foto. Loop infinito (2 cópias cada).
 - **Stack de 3 CTAs** com hierarquia decrescente (primário WhatsApp → secundário
   portfólio → terciário site outline). Gap de 12px. Todos full-width,
   `min-h-[48px]`, `rounded-md`.
@@ -38,7 +40,8 @@ não fazem parte do sistema genérico de marca.
 
 ## Motion
 
-- Carrossel: autoplay em JS (rAF) que pausa em hover/drag/touch.
+- Galeria: autoplay em JS (rAF) que roda o tempo todo; pausa só durante o
+  arrasto e retoma ao soltar (não pausa no hover). Faixas em sentidos opostos.
 - Botões: apenas `transition-colors` + `active state` (feedback tátil mobile).
 - Respeitar `prefers-reduced-motion`: sem autoplay (o arrasto manual continua).
 

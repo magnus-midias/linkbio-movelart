@@ -40,35 +40,38 @@ manutenção.
 - Nome: **"Movelart"**
 - Subtítulo: **"Móveis Sob Medida | Grande Florianópolis, SC"**
 
-### [2] Carrossel de fotos — topo (strip arrastável)
-- Carrossel horizontal **arrastável nos dois sentidos** (touch nativo + drag no
-  mouse do desktop). **Não abre/expande** a foto no clique.
-- Autoplay suave que pausa durante a interação; respeita
-  `prefers-reduced-motion`. Loop infinito (2 cópias).
-- 6 fotos. Placeholder: `aspect-ratio` 4/3, fundo `brand-surface`, texto "Foto X".
-- Altura ~180px. Fase posterior: substituir por `<Image>` reais.
+### [2] Galeria — duas faixas de fotos (sentidos opostos)
+- **Duas faixas** empilhadas de fotos, cada uma girando em um sentido: a de cima
+  para a **esquerda**, a de baixo para a **direita**.
+- Fotos em **tamanho reduzido** (`h-[90px]`, ~metade). Mais fotos à mostra,
+  impressão de "parede de projetos" — prova visual imediata.
+- Cada faixa: **roda automaticamente o tempo todo**; ao arrastar (touch/mouse)
+  ela mexe; ao soltar, volta a rodar naturalmente. **Não pausa no hover**.
+  **Não abre/expande** a foto. Loop infinito (2 cópias). Respeita
+  `prefers-reduced-motion`.
+- Componente `Carrossel` com props `direction` e `size`. Placeholders "Foto 1–12".
+- Fase posterior: substituir por `<Image>` (WebP, tamanho fixo).
 
-### [3] Botões principais (CTAs empilhados, centralizados)
-| # | Tipo        | Rótulo                | Destino                                  | Detalhe                 |
-| - | ----------- | --------------------- | ---------------------------------------- | ----------------------- |
-| 1 | Primário    | Solicitar orçamento   | https://wa.me/5548996340636              | Ícone WhatsApp à direita|
-| 2 | Secundário  | Ver portfólio         | https://moveismovelart.com.br/ambientes  | —                       |
-| 3 | Terciário   | Acessar o site        | https://moveismovelart.com.br            | Outline menor           |
+### [3] Botões (CTAs empilhados — um único bloco)
+Os três botões ficam **num só grupo** (`<nav>`), full-width, alinhados e com
+espaçamento uniforme (`gap-3` = 12px). Vêm logo abaixo da galeria (prova visual
+→ conversão, ainda perto da dobra).
+
+| # | Tipo       | Rótulo              | Destino                                  | Detalhe                  |
+| - | ---------- | ------------------- | ---------------------------------------- | ------------------------ |
+| 1 | Primário   | Solicitar orçamento | https://wa.me/5548996340636              | Ícone WhatsApp à direita |
+| 2 | Secundário | Ver portfólio       | https://moveismovelart.com.br/ambientes  | —                        |
+| 3 | Terciário  | Acessar o site      | https://moveismovelart.com.br            | Outline menor            |
 
 - Todos: `min-height` 48px, full-width, `rounded-md`.
-- Gap entre botões: 12px.
 
-### [4] Carrossel de fotos — abaixo dos botões
-- Mesmo componente do [2], com **6 fotos diferentes** (placeholders "Foto 7–12").
-- Mesmo comportamento: arrastável nos dois sentidos, sem expandir.
-
-### [5] Redes sociais (ícones)
+### [4] Redes sociais (ícones)
 - Instagram: https://www.instagram.com/movelartoficial/
 - WhatsApp: https://wa.me/5548996340636
 - SVG inline, 28px, cor `brand-muted`, hover `brand-accent`.
-- Centralizados, `gap-6`. Ficam **abaixo do segundo carrossel**.
+- Centralizados, `gap-6`.
 
-### [6] Rodapé mínimo
+### [5] Rodapé mínimo
 - Texto: **"© 2025 Movelart · São José, SC"**
 - Texto pequeno, `brand-muted`.
 

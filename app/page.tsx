@@ -6,15 +6,27 @@ import { Rodape } from "@/components/Rodape";
 import { IconWhatsApp } from "@/components/icons";
 
 // Composição do link na bio. Ordem das seções: docs/arquitetura §3.
+// Header → galeria (2 faixas opostas) → orçamento → portfólio/site → redes → rodapé.
 export default function Home() {
   return (
     <main className="flex flex-1 flex-col gap-8 py-8">
       <Header />
 
-      <Carrossel
-        fotos={[1, 2, 3, 4, 5, 6]}
-        ariaLabel="Fotos de projetos da Movelart"
-      />
+      {/* Galeria: duas faixas de fotos girando em sentidos opostos */}
+      <div className="flex flex-col gap-3">
+        <Carrossel
+          fotos={[1, 2, 3, 4, 5, 6]}
+          direction="left"
+          size="sm"
+          ariaLabel="Fotos de projetos da Movelart"
+        />
+        <Carrossel
+          fotos={[7, 8, 9, 10, 11, 12]}
+          direction="right"
+          size="sm"
+          ariaLabel="Mais fotos de projetos da Movelart"
+        />
+      </div>
 
       <nav aria-label="Ações principais" className="flex flex-col gap-3">
         <BotaoCta
@@ -37,11 +49,6 @@ export default function Home() {
           dataLabel="site"
         />
       </nav>
-
-      <Carrossel
-        fotos={[7, 8, 9, 10, 11, 12]}
-        ariaLabel="Mais fotos de projetos da Movelart"
-      />
 
       <RedesSociais />
 

@@ -2,32 +2,50 @@
 
 import { useEffect, useRef } from "react";
 
-// Carrossel arrastável (strip). O usuário pode arrastar nos dois sentidos:
-// touch nativo no mobile + drag com o mouse no desktop. Não abre/expande a foto.
-// Autoplay suave que pausa durante a interação e respeita prefers-reduced-motion.
-// Duas cópias idênticas da lista garantem o loop infinito nos dois lados.
+// Carrossel arrastável (strip). Roda automaticamente o tempo todo; só pausa
+// enquanto o usuário arrasta (drag no mouse ou touch) e volta a rodar ao soltar.
+// NÃO pausa no hover.
+//
+// A posição do giro é controlada por uma variável própria (`pos`, float) que
+// SÓ escreve em `scrollLeft` durante o autoplay; quando o usuário arrasta, a
+// gente lê `scrollLeft` de volta. Isso evita o travamento por arredondamento do
+// navegador (que acontecia no sentido "right") e funciona igual nos dois lados.
+//
+// `direction` define o sentido (esquerda/direita); loop infinito via 2 cópias
+// idênticas. Não abre/expande a foto. Respeita prefers-reduced-motion.
 // Ver docs/design-system/MASTER.md §5.6 e §6.
 //
-// Fase 4: substituir os placeholders por <Image> com as fotos reais.
+// Fase 4: substituir os placeholders por <Image> (WebP, tamanho fixo).
 type CarrosselProps = {
   fotos: number[];
   ariaLabel: string;
+  direction?: "left" | "right";
+  size?: "sm" | "md";
 };
 
-function Card({ n }: { n: number }) {
+function Card({ n, size }: { n: number; size: "sm" | "md" }) {
+  const altura = size === "sm" ? "h-[90px]" : "h-[180px]";
   return (
-    <div className="mr-3 flex aspect-[4/3] h-[180px] shrink-0 select-none items-center justify-center rounded-sm bg-brand-surface">
-      <span className="font-yantra text-xs uppercase tracking-widest text-brand-muted">
+    <div
+      className={`mr-3 flex ${altura} aspect-[4/3] shrink-0 select-none items-center justify-center rounded-sm bg-brand-surface`}
+    >
+      <span className="font-yantra text-[10px] uppercase tracking-widest text-brand-muted">
         Foto {n}
       </span>
     </div>
   );
 }
 
-export function Carrossel({ fotos, ariaLabel }: CarrosselProps) {
+export function Carrossel({
+  fotos,
+  ariaLabel,
+  direction = "left",
+  size = "md",
+}: CarrosselProps) {
   const ref = useRef<HTMLDivElement>(null);
   const drag = useRef({ active: false, lastX: 0 });
   const paused = useRef(false);
+  const pos = useRef(0);
 
   useEffect(() => {
     const el = ref.current;
@@ -36,23 +54,28 @@ export function Carrossel({ fotos, ariaLabel }: CarrosselProps) {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const speed = direction === "right" ? -0.5 : 0.5;
 
     let raf = 0;
     const tick = () => {
       const half = el.scrollWidth / 2;
       if (half > 0) {
-        if (!paused.current && !prefersReduced) {
-          el.scrollLeft += 0.5;
+        if (paused.current || prefersReduced) {
+          // Usuário no controle (arrasto) ou sem autoplay: acompanha a posição.
+          pos.current = el.scrollLeft;
+        } else {
+          pos.current += speed;
+          // normaliza para [0, half) → loop infinito nos dois sentidos
+          if (pos.current < 0) pos.current += half;
+          else if (pos.current >= half) pos.current -= half;
+          el.scrollLeft = pos.current;
         }
-        // loop infinito nos dois sentidos
-        if (el.scrollLeft >= half) el.scrollLeft -= half;
-        else if (el.scrollLeft <= 0) el.scrollLeft += half;
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [direction]);
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     paused.current = true;
@@ -70,13 +93,10 @@ export function Carrossel({ fotos, ariaLabel }: CarrosselProps) {
     drag.current.lastX = e.clientX;
   };
 
+  // Solta o arrasto e volta a rodar naturalmente do ponto onde parou.
   const endInteraction = () => {
     drag.current.active = false;
     paused.current = false;
-  };
-
-  const onPointerEnter = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType === "mouse") paused.current = true;
   };
 
   return (
@@ -89,14 +109,13 @@ export function Carrossel({ fotos, ariaLabel }: CarrosselProps) {
       onPointerMove={onPointerMove}
       onPointerUp={endInteraction}
       onPointerCancel={endInteraction}
-      onPointerEnter={onPointerEnter}
       onPointerLeave={endInteraction}
-      className="-mx-4 flex cursor-grab overflow-x-auto overflow-y-hidden overscroll-x-contain pb-1 focus-visible:outline-none active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="-mx-4 flex cursor-grab overflow-x-auto overflow-y-hidden overscroll-x-contain focus-visible:outline-none active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {[0, 1].map((copia) => (
         <div className="flex shrink-0" key={copia} aria-hidden={copia === 1}>
           {fotos.map((n) => (
-            <Card key={`${copia}-${n}`} n={n} />
+            <Card key={`${copia}-${n}`} n={n} size={size} />
           ))}
         </div>
       ))}
