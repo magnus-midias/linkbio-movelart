@@ -86,6 +86,7 @@ Toda alteração relevante vira um arquivo `.md` novo em `docs/historico/`.
 | `docs/design-system/pages/`               | Overrides visuais por página (desvios do MASTER) |
 | `docs/instrucoes/instrucoes.md`           | Regras de trabalho e plano de ação em fases   |
 | `docs/historico/`                         | Log cronológico de toda alteração relevante   |
+| `docs/pendencias.md`                      | O que falta e onde mexer quando os insumos chegarem |
 | `docs/prompt-inicial/prompt-inicial.md`   | Briefing original do projeto                   |
 
 ---

@@ -236,8 +236,8 @@ Promoção prevista para `public/images/` na Fase 1.
 
 - `favicon.svg` — versão canônica (fundo `#FBFBFB`, ícone `#801611`).
 - Será promovido para `app/icon.svg` (detectado automaticamente pelo App Router).
-- **Débito:** falta `.ico` de fallback e `apple-touch-icon.png` — resolver na
-  fase de finalização (obrigatório para link na bio: OG + apple-touch-icon).
+- `app/apple-icon.png` (180×180) gerado a partir do `favicon.svg`.
+- **Débito:** falta `.ico` de fallback (legado) — ver `docs/pendencias.md`.
 
 ### 7.3 Ícones funcionais
 - SVGs inline nos componentes (WhatsApp, Instagram), estilo Feather
@@ -245,8 +245,9 @@ Promoção prevista para `public/images/` na Fase 1.
 
 ### 7.4 Foto de projetos / OG
 - Galeria: placeholders ativos, substituídos por fotos reais dos projetos.
-- Imagem Open Graph (1200×630) pré-gerada — necessária, pois a URL será
-  compartilhada no WhatsApp.
+- Imagem Open Graph (1200×630) em `app/opengraph-image.png` — versão
+  **tipográfica** branded (fundo `brand-dark`, "Movelart" + subtítulo). Quando
+  houver foto de projeto boa, vale trocar por uma com imagem real.
 
 ---
 

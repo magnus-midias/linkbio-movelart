@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
+import type { Foto } from "@/lib/projetos";
 
 // Carrossel arrastável (strip). Roda automaticamente o tempo todo; só pausa
 // enquanto o usuário arrasta (drag no mouse ou touch) e volta a rodar ao soltar.
@@ -11,26 +13,44 @@ import { useEffect, useRef } from "react";
 // gente lê `scrollLeft` de volta. Isso evita o travamento por arredondamento do
 // navegador (que acontecia no sentido "right") e funciona igual nos dois lados.
 //
-// `direction` define o sentido (esquerda/direita); loop infinito via 2 cópias
-// idênticas. Não abre/expande a foto. Respeita prefers-reduced-motion.
+// `direction` define o sentido; loop infinito via 2 cópias idênticas. Não
+// abre/expande a foto. Respeita prefers-reduced-motion.
+// Cada foto mostra a imagem real (quando há `src`) ou um placeholder "Foto N".
 // Ver docs/design-system/MASTER.md §5.6 e §6.
-//
-// Fase 4: substituir os placeholders por <Image> (WebP, tamanho fixo).
 type CarrosselProps = {
-  fotos: number[];
+  fotos: Foto[];
   ariaLabel: string;
   direction?: "left" | "right";
   size?: "sm" | "md";
 };
 
-function Card({ n, size }: { n: number; size: "sm" | "md" }) {
+function Card({ foto, size }: { foto: Foto; size: "sm" | "md" }) {
   const altura = size === "sm" ? "h-[90px]" : "h-[180px]";
+  const [w, h] = size === "sm" ? [120, 90] : [240, 180];
+
+  if (foto.src) {
+    return (
+      <div
+        className={`mr-3 ${altura} aspect-[4/3] shrink-0 overflow-hidden rounded-sm`}
+      >
+        <Image
+          src={foto.src}
+          alt={foto.alt ?? ""}
+          width={w}
+          height={h}
+          draggable={false}
+          className="h-full w-full select-none object-cover"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className={`mr-3 flex ${altura} aspect-[4/3] shrink-0 select-none items-center justify-center rounded-sm bg-brand-surface`}
     >
       <span className="font-yantra text-[10px] uppercase tracking-widest text-brand-muted">
-        Foto {n}
+        {foto.label}
       </span>
     </div>
   );
@@ -114,8 +134,8 @@ export function Carrossel({
     >
       {[0, 1].map((copia) => (
         <div className="flex shrink-0" key={copia} aria-hidden={copia === 1}>
-          {fotos.map((n) => (
-            <Card key={`${copia}-${n}`} n={n} size={size} />
+          {fotos.map((foto, i) => (
+            <Card key={`${copia}-${i}`} foto={foto} size={size} />
           ))}
         </div>
       ))}

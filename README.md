@@ -87,25 +87,65 @@ npm start
 
 ---
 
+## Variáveis de ambiente
+
+Copie `.env.example` para `.env.local` e preencha quando tiver os valores. Todas
+são opcionais para rodar em desenvolvimento.
+
+| Variável | Uso |
+| -------- | --- |
+| `NEXT_PUBLIC_GTM_ID` | ID do container do Google Tag Manager (ex.: `GTM-XXXXXXX`). Sem ele, o GTM não carrega — a captura de cliques por `data-label` segue empurrando eventos `link_click` para o `dataLayer`, prontos para quando o GTM existir. |
+| `NEXT_PUBLIC_SITE_URL` | URL de produção, usada em metadata/OG, `sitemap.xml` e `robots.txt`. Fallback: `https://linkbio-movelart.vercel.app`. |
+
+---
+
+## SEO, rastreamento e descoberta
+
+- **Open Graph / Twitter:** `app/opengraph-image.png` (1200×630) e
+  `app/apple-icon.png` (180×180) são detectados automaticamente pelo App Router;
+  `metadataBase` gera as URLs absolutas.
+- **Descoberta:** `robots.txt` (`app/robots.ts`), `sitemap.xml`
+  (`app/sitemap.ts`) e `public/llms.txt`.
+- **Rastreamento:** cada link/CTA tem um `data-label`; `components/Analytics.tsx`
+  captura os cliques e envia `link_click` (com `link_label` e `link_url`) para o
+  `dataLayer`. O GTM é carregado apenas se `NEXT_PUBLIC_GTM_ID` estiver definido.
+- **Segurança:** headers HTTP em `next.config.mjs` (X-Content-Type-Options,
+  X-Frame-Options, Referrer-Policy, HSTS, Permissions-Policy). CSP fica como
+  pendência (depende dos domínios de GTM/GA).
+
+---
+
 ## Estrutura do projeto
 
 ```
 .
 ├── app/
-│   ├── layout.tsx        # fontes, metadata/OG, container ~420px
-│   ├── page.tsx          # composição da página única
-│   ├── globals.css       # base Tailwind
-│   └── icon.svg          # favicon (App Router)
+│   ├── layout.tsx          # fontes, metadata/OG, container ~420px, Analytics
+│   ├── page.tsx            # composição da página única
+│   ├── globals.css         # base Tailwind
+│   ├── icon.svg            # favicon (App Router)
+│   ├── apple-icon.png      # apple-touch-icon 180×180
+│   ├── opengraph-image.png # imagem OG 1200×630 (auto-detectada)
+│   ├── robots.ts           # robots.txt
+│   └── sitemap.ts          # sitemap.xml
 ├── components/
-│   ├── Header.tsx        # logo + nome + subtítulo
-│   ├── Carrossel.tsx     # strip de fotos arrastável (client)
-│   ├── BotaoCta.tsx      # CTA com 3 variantes
-│   ├── RedesSociais.tsx  # ícones Instagram / WhatsApp
-│   ├── Rodape.tsx
-│   └── icons.tsx         # SVGs inline
-├── public/images/        # logos da marca (fotos de projeto na Fase 4)
-├── docs/                 # documentação viva (ver abaixo)
-└── tailwind.config.ts    # tokens do design system
+│   ├── Header.tsx          # logo + nome + subtítulo
+│   ├── Carrossel.tsx       # strip de fotos arrastável (client)
+│   ├── BotaoCta.tsx        # CTA com 3 variantes
+│   ├── RedesSociais.tsx    # ícones Instagram / WhatsApp
+│   ├── Rodape.tsx          # copyright + crédito
+│   ├── Analytics.tsx       # GTM (por env) + captura de cliques (data-label)
+│   └── icons.tsx           # SVGs inline
+├── lib/
+│   ├── projetos.ts         # dados das fotos dos carrosséis (Fase 4)
+│   └── site.ts             # SITE_URL (metadata/sitemap/robots)
+├── public/
+│   ├── images/             # logos da marca
+│   │   └── projetos/       # fotos dos projetos (Fase 4)
+│   └── llms.txt
+├── docs/                   # documentação viva (ver abaixo)
+├── next.config.mjs         # headers de segurança
+└── tailwind.config.ts      # tokens do design system
 ```
 
 ### Layout da página (topo → base)
@@ -200,12 +240,13 @@ Lighthouse mobile ≥ 95, LCP < 1,8s, CLS = 0, acessibilidade AA.
 | 1 | Fundação técnica (tokens, fontes, metadata) | ✅ |
 | 2 | Layout e container | ✅ |
 | 3 | Componentes | ✅ |
-| 4 | Conteúdo real (fotos dos projetos) | ⬜ |
-| 5 | Rastreamento e descoberta (GTM, OG, robots/sitemap/llms) | ⬜ |
-| 6 | Qualidade e deploy | ⬜ |
+| 4 | Conteúdo real | 🔶 estrutura pronta; faltam as **fotos** dos projetos |
+| 5 | Rastreamento e descoberta | 🔶 OG, robots/sitemap/llms e wiring de tracking prontos; faltam **GTM ID** e **CSP** |
+| 6 | Qualidade e deploy | 🔶 build de produção OK; faltam **Lighthouse** e **deploy** |
 
-Placeholders de foto ("Foto N") serão substituídos pelas imagens reais dos
-projetos na Fase 4.
+Pendências detalhadas em [`docs/pendencias.md`](docs/pendencias.md). Os
+placeholders de foto ("Foto N") são substituídos pelas imagens reais ao
+preencher [`lib/projetos.ts`](lib/projetos.ts) (Fase 4).
 
 ---
 

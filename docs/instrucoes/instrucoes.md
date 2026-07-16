@@ -31,9 +31,9 @@ triviais de texto de documentação não exigem novo histórico.
 
 ## 2. Plano de ação em fases
 
-> **Estado atual:** Fase 3 concluída (componentes estilizados). Build de
-> produção passando. Próximo: Fase 4 (conteúdo real — logo já aplicado; faltam
-> fotos reais e favicon/apple-touch).
+> **Estado atual:** Fases 4–6 executadas até onde não dependem de insumos do
+> cliente. Build de produção passando. **Pendências** (fotos, GTM ID, domínio,
+> CSP, Lighthouse, deploy) documentadas em `docs/pendencias.md`.
 
 ### Fase 0 — Estrutura e documentação ✅ (concluída)
 - [x] Criar estrutura de pastas `docs/`.
@@ -74,30 +74,36 @@ triviais de texto de documentação não exigem novo histórico.
 - [x] `Rodape`.
 - [x] `components/icons.tsx` (Instagram/WhatsApp) + `page.tsx` recomposto.
 
-### Fase 4 — Conteúdo real
-- Substituir logo placeholder pelo `icone-vermelho.svg` oficial.
-- Substituir cards placeholder por fotos reais dos projetos via `<Image>`
-  (WebP, `loading="eager"` nas primeiras — estão acima do fold).
-- Favicon (`app/icon.svg`), `apple-touch-icon.png` e `.ico` de fallback.
+### Fase 4 — Conteúdo real 🔶 (estrutura pronta; faltam fotos)
+- [x] Logo real (`icone-vermelho.svg`) no header.
+- [x] Galeria data-driven: `lib/projetos.ts` + `Carrossel` renderiza `<Image>`
+  quando há `src`, senão placeholder. Pasta `public/images/projetos/` criada.
+- [x] `apple-touch-icon.png` (180×180) gerado.
+- [ ] **Fotos reais** dos projetos (depende do cliente) — preencher `src`/`alt`
+  em `lib/projetos.ts`. Ver `docs/pendencias.md`.
+- [ ] `favicon.ico` de fallback (legado).
 
-### Fase 5 — Rastreamento e descoberta (do framework)
-- GTM instalado; evento `link_click` com `link_label` e `link_url` por CTA
-  (`data-label` único em cada link).
-- Open Graph completo + imagem OG 1200×630 pré-gerada (a URL será compartilhada
-  no WhatsApp).
-- `robots.txt` (via `app/robots.ts`), `sitemap.xml` (via `app/sitemap.ts`) e
-  `llms.txt`.
-- Headers HTTP de segurança (`vercel.json`): CSP, X-Frame-Options,
-  X-Content-Type-Options. Links externos com `rel="noopener noreferrer"`.
+### Fase 5 — Rastreamento e descoberta 🔶 (feito, menos GTM ID/CSP)
+- [x] Wiring de tracking: `data-label` em todos os CTAs + `Analytics.tsx` empurra
+  `link_click` (`link_label`, `link_url`) para o `dataLayer`. GTM carrega só com
+  `NEXT_PUBLIC_GTM_ID`.
+- [x] Open Graph + imagem OG 1200×630 (`app/opengraph-image.png`, auto-detectada)
+  + `metadataBase`.
+- [x] `robots.txt` (`app/robots.ts`), `sitemap.xml` (`app/sitemap.ts`),
+  `public/llms.txt`.
+- [x] Headers de segurança em `next.config.mjs` (X-Frame-Options,
+  X-Content-Type-Options, Referrer-Policy, HSTS, Permissions-Policy).
+- [ ] **GTM ID** (cliente) e **CSP** (depende dos domínios GTM/GA).
+- [ ] Confirmar **domínio** (`NEXT_PUBLIC_SITE_URL`).
 
-### Fase 6 — Qualidade e deploy
-- Acessibilidade (WCAG AA): contraste ≥ 4.5:1, focus ring, `aria-label` nos
-  links, `prefers-reduced-motion` na galeria.
-- Mobile dedicado: iPhone SE (375px), toque ≥ 44px, sem scroll horizontal,
-  corpo ≥ 16px. Testar iOS Safari + Chrome Android.
-- Performance: Lighthouse mobile ≥ 95, LCP < 1.8s, CLS = 0.
-- Confirmar nome do repositório GitHub com o usuário.
-- Deploy na Vercel (free tier) + uptime monitor.
+### Fase 6 — Qualidade e deploy 🔶 (build OK; faltam Lighthouse e deploy)
+- [x] Acessibilidade base: `aria-label` nos links, `focus-visible`,
+  `prefers-reduced-motion`, container mobile-first, toques ≥ 44/48px.
+- [x] Build de produção passando (9 rotas estáticas).
+- [x] Repositório GitHub confirmado (`magnus-midias/linkbio-movelart`).
+- [ ] **Lighthouse mobile ≥ 95** (LCP < 1,8s, CLS = 0) — medir com fotos reais.
+- [ ] Passe de mobile em device real (iPhone SE / Chrome Android).
+- [ ] **Deploy na Vercel** (free tier) + uptime monitor.
 
 ---
 

@@ -4,6 +4,7 @@ import { BotaoCta } from "@/components/BotaoCta";
 import { RedesSociais } from "@/components/RedesSociais";
 import { Rodape } from "@/components/Rodape";
 import { IconWhatsApp } from "@/components/icons";
+import { FAIXA_TOPO, FAIXA_BASE } from "@/lib/projetos";
 
 // Composição do link na bio. Ordem das seções: docs/arquitetura §3.
 // Header → galeria (2 faixas opostas) → orçamento → portfólio/site → redes → rodapé.
@@ -15,13 +16,13 @@ export default function Home() {
       {/* Galeria: duas faixas de fotos girando em sentidos opostos */}
       <div className="flex flex-col gap-3">
         <Carrossel
-          fotos={[1, 2, 3, 4, 5, 6]}
+          fotos={FAIXA_TOPO}
           direction="left"
           size="sm"
           ariaLabel="Fotos de projetos da Movelart"
         />
         <Carrossel
-          fotos={[7, 8, 9, 10, 11, 12]}
+          fotos={FAIXA_BASE}
           direction="right"
           size="sm"
           ariaLabel="Mais fotos de projetos da Movelart"

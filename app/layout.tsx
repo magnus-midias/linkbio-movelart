@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Open_Sans, Mulish, Yantramanav } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@/components/Analytics";
+import { SITE_URL } from "@/lib/site";
 
 // Tipografia da marca (ver docs/design-system/MASTER.md §2)
 const openSans = Open_Sans({
@@ -23,17 +25,20 @@ const yantramanav = Yantramanav({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Movelart | Móveis Sob Medida em Florianópolis",
   description:
     "Marcenaria de alto padrão na Grande Florianópolis. Projetos exclusivos sob medida. Solicite seu orçamento pelo WhatsApp.",
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Movelart | Móveis Sob Medida em Florianópolis",
     description:
       "Marcenaria de alto padrão na Grande Florianópolis. Projetos exclusivos sob medida.",
+    url: "/",
     type: "profile",
     locale: "pt_BR",
     siteName: "Movelart",
-    // TODO (Fase 5): definir url canônica + images (og-image 1200x630)
+    // A imagem OG (1200x630) é detectada automaticamente em app/opengraph-image.png
   },
 };
 
@@ -49,6 +54,7 @@ export default function RootLayout({
         <div className="mx-auto flex min-h-dvh w-full max-w-[420px] flex-col px-4">
           {children}
         </div>
+        <Analytics />
       </body>
     </html>
   );
