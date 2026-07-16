@@ -188,8 +188,11 @@ transition-colors
 - `aria-label` na tag `<a>`; SVG interno com `aria-hidden="true"`.
 
 ### 5.8 Rodapé
-- Texto: "© 2025 Movelart · São José, SC".
-- `text-xs font-yantra text-brand-muted`, centralizado.
+- Duas linhas, `text-xs font-yantra text-brand-muted`, centralizado:
+  1. "© 2026 Movelart. Todos os direitos reservados."
+  2. "Desenvolvido por **Magnus Mídias**" — o nome é link para
+     <https://magnusmidias.com> (`target="_blank"`, `rel="noopener noreferrer"`,
+     `data-label="magnus-midias"`, sublinhado, hover `brand-accent`).
 
 ### 5.9 Rastreamento de cliques
 - Cada link/CTA recebe um `data-label` único para o GTM

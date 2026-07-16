@@ -71,8 +71,10 @@ espaçamento uniforme (`gap-3` = 12px). Vêm logo abaixo da galeria (prova visua
 - SVG inline, 28px, cor `brand-muted`, hover `brand-accent`.
 - Centralizados, `gap-6`.
 
-### [5] Rodapé mínimo
-- Texto: **"© 2025 Movelart · São José, SC"**
+### [5] Rodapé
+- Linha 1: **"© 2026 Movelart. Todos os direitos reservados."**
+- Linha 2: **"Desenvolvido por Magnus Mídias"** — nome com link para
+  <https://magnusmidias.com> (nova aba, `rel="noopener noreferrer"`).
 - Texto pequeno, `brand-muted`.
 
 ---
